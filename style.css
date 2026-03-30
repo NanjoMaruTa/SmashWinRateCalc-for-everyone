@@ -1,0 +1,1316 @@
+/* 白基調のシンプルなデザイン */
+:root {
+    --bg-color: #f7f9fc;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --border-color: #e2e8f0;
+    --accent-red: #e53e3e;
+    /* スマブラらしい赤いアクセントカラー */
+    --hover-bg: #fdf2f2;
+}
+
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* ヘッダー */
+.app-header {
+    background-color: var(--card-bg);
+    padding: 24px 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.app-header h1 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.app-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #666666;
+}
+
+.change-url-btn {
+    position: absolute;
+    bottom: 12px;
+    right: 20px;
+    background-color: transparent;
+    border: 1px solid #cbd5e0;
+    color: #4a5568;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.change-url-btn:hover {
+    background-color: #f7fafc;
+    border-color: #a0aec0;
+    color: #2d3748;
+}
+
+.header-howto-btn {
+    position: absolute;
+    bottom: 12px;
+    left: 20px;
+    background-color: transparent;
+    border: 1px solid #cbd5e0;
+    color: #4a5568;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.header-howto-btn:hover {
+    background-color: #f7fafc;
+    border-color: #a0aec0;
+    color: #2d3748;
+}
+
+/* メインコンテンツ */
+.main-content {
+    padding: 0px 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.roster-container {
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* ロースター上部ヘッダー（戻るボタン配置用） */
+.roster-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    height: 32px;
+}
+
+/* 戻るボタン */
+.back-btn {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 6px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666666;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.back-btn:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}
+
+.selected-player-display {
+    background-color: #ffffff;
+    color: #5f5f5f;
+    padding: 0 12px;
+    border-radius: 4px;
+    border: 1px solid #bdbcbc;
+    font-size: 14px;
+    font-weight: bold;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.selected-player-display span {
+    margin-left: 8px;
+    color: #5f5f5f;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* キャラクターリストのグリッド */
+.roster {
+    display: grid;
+    /* 横13列 */
+    grid-template-columns: repeat(13, 1fr);
+    gap: 4px;
+    background-color: var(--card-bg);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+}
+
+/* キャラクターボタン */
+.char-btn {
+    /* 長方形に近づけるための比率。少し横長か正方形に数値を調整 */
+    aspect-ratio: 4 / 3;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    /* 少し小さめに調整 */
+    font-weight: 500;
+    color: #444444;
+    /* 色を少し濃く */
+    position: relative;
+    padding: 2px;
+    text-align: center;
+    overflow: hidden;
+    /* テキストがはみ出ないように */
+    word-break: break-all;
+    /* 長い単語を折り返す */
+}
+
+/* 最下段（7行目）の配置調整
+   13列×6行 = 78
+   79番目の要素は7行目の先頭になります。
+   左右2つを欠けさせるため、左から3列目（grid-column-start: 3）から開始します。
+*/
+.char-btn:nth-child(79) {
+    grid-column-start: 3;
+}
+
+/* 画像ありボタン: flex方向を縦に変更 */
+.char-btn.has-image {
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* キャラクター画像 */
+.char-img {
+    width: 100%;
+    flex: 1;
+    object-fit: cover;
+    /* アスペクト比を保ちつつトリミング */
+    object-position: center;
+    /* 画像を中央で切り取る */
+    display: block;
+    min-height: 0;
+    /* flex子要素の縮小を許可 */
+}
+
+/* 画像ありボタンのテキストラベル */
+.char-btn.has-image .char-label {
+    font-size: 10px;
+    padding: 2px 4px;
+    text-align: center;
+    line-height: 1.2;
+    white-space: nowrap;
+    /* 1行入りに固定 */
+    overflow: hidden;
+    /* はみ出しは非表示 */
+    width: 100%;
+    flex-shrink: 0;
+}
+
+/* 画像なしボタンのラベル（通常のテキスト表示） */
+.char-btn:not(.has-image) .char-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #444444;
+    word-break: break-all;
+    text-align: center;
+}
+
+/* ホバー時のエフェクト */
+.char-btn:hover:not(.settings-btn) {
+    transform: scale(1.05);
+    border-color: var(--accent-red);
+    box-shadow: 0 2px 8px rgba(229, 62, 62, 0.2);
+    z-index: 10;
+    background-color: var(--hover-bg);
+    color: var(--accent-red);
+    font-weight: bold;
+}
+
+/* 設定ボタン専用スタイル（機能がない状態） */
+.char-btn.settings-btn {
+    cursor: default;
+    background-color: #f0f0f0;
+    color: #888888;
+    border-style: dashed;
+}
+
+/* 選択時の状態 */
+.char-btn.selected {
+    background-color: var(--accent-red);
+    color: #ffffff;
+    border-color: var(--accent-red);
+    transform: scale(1.05);
+    z-index: 5;
+    box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+}
+
+/* --- 勝率計算・記録ページ用スタイル --- */
+.match-container {
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border-color);
+    padding: 24px;
+    margin-top: 20px;
+}
+
+.match-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.match-header .back-btn {
+    align-self: flex-start;
+    margin-bottom: 16px;
+    background-color: transparent;
+    border: none;
+    padding: 8px;
+    color: #0066cc;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.match-header .back-btn:hover {
+    text-decoration: underline;
+    background-color: transparent;
+}
+
+.vs-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-color);
+    text-align: center;
+    margin: 0;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    width: 100%;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.result-btn {
+    flex: 1;
+    padding: 16px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    color: white;
+}
+
+.result-btn:active {
+    transform: translateY(2px);
+}
+
+.win-btn {
+    background-color: #38a169;
+    box-shadow: 0 4px 0 #276749;
+}
+
+.win-btn:active {
+    box-shadow: 0 0 0 #276749;
+}
+
+.loss-btn {
+    background-color: #e53e3e;
+    box-shadow: 0 4px 0 #c53030;
+}
+
+.loss-btn:active {
+    box-shadow: 0 0 0 #c53030;
+}
+
+/* ステージ選択ボタン */
+.stage-select-container {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.stage-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.stage-btn {
+    flex: 1;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 12px 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: #4a5568;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.stage-btn:hover {
+    background-color: #ebf8ff;
+    border-color: #3182ce;
+    color: #3182ce;
+}
+
+.stage-btn.active {
+    background-color: #3182ce;
+    color: #ffffff;
+    border-color: #3182ce;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(49, 130, 206, 0.3);
+}
+
+.stats-section {
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.stats-section h3,
+.history-section h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #444;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+.clear-all-btn {
+    background-color: transparent;
+    border: 1px solid #e53e3e;
+    color: #e53e3e;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clear-all-btn:hover {
+    background-color: #e53e3e;
+    color: white;
+}
+
+.stats-cards {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.stat-card {
+    background-color: #f7fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    /* 子要素の絶対配置のため */
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #718096;
+    margin-bottom: 4px;
+}
+
+.stat-value-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.stat-value-container .breakdown-btn {
+    position: absolute;
+    bottom: -8px;
+    /* カードの右下に配置 */
+    right: -8px;
+    padding: 2px 5px;
+    font-size: 10px;
+    /* モバイル用にテキスト置換するための準備 */
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: #fff;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+/* 日付＋ステージタグを縦に積むコンテナ */
+.history-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.history-date {
+    color: #718096;
+    font-size: 14px;
+}
+
+/* ステージ名タグ */
+.history-stage {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    color: #3182ce;
+    background-color: #ebf8ff;
+    border: 1px solid #bee3f8;
+    border-radius: 4px;
+    padding: 1px 6px;
+    width: fit-content;
+    margin-right: 8px;
+    /* WIN/LOSEとの隙間 */
+}
+
+.history-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.delete-history-btn {
+    background-color: #f7fafc;
+    border: 1px solid #cbd5e0;
+    color: #718096;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.delete-history-btn:hover {
+    background-color: #feb2b2;
+    border-color: #e53e3e;
+    color: #c53030;
+}
+
+.history-result.win {
+    color: #38a169;
+    font-weight: bold;
+}
+
+.history-result.win {
+    color: #38a169;
+    font-weight: bold;
+}
+
+.history-result.loss {
+    color: #e53e3e;
+    font-weight: bold;
+}
+
+/* ランキング用タブとリスト */
+.ranking-tabs .inactive-tab {
+    background-color: #cbd5e0;
+    color: #4a5568;
+    box-shadow: 0 4px 0 #a0aec0;
+}
+
+.ranking-tabs .inactive-tab:active {
+    box-shadow: 0 0 0 #a0aec0;
+}
+
+.ranking-list {
+    max-height: 400px;
+}
+
+.ranking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: #fff;
+}
+
+.ranking-left-group {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.ranking-rank {
+    font-weight: bold;
+    font-size: 16px;
+    color: #4a5568;
+    width: 36px;
+    flex-shrink: 0;
+}
+
+.ranking-img-wrapper {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.ranking-img {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 4px;
+    /* 四角ベースのまま角を少し丸化 */
+}
+
+/* ヘッダー画像表示用 */
+.vs-header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.header-img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+.ranking-name {
+    font-weight: bold;
+    color: var(--text-color);
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+.ranking-rate {
+    font-weight: bold;
+    font-size: 18px;
+    color: #38a169;
+}
+
+/* 詳細勝率画面用のスタイル */
+.detail-overview {
+    display: flex;
+    justify-content: space-around;
+    background-color: #f7fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.detail-overview-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.detail-overview-label {
+    font-size: 14px;
+    color: #4a5568;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.detail-overview-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #3182ce;
+    margin-bottom: 8px;
+    /* 内訳ボタンとの余白 */
+}
+
+/* 内訳ボタン */
+.breakdown-btn {
+    background-color: transparent;
+    border: 1px solid #3182ce;
+    color: #3182ce;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.breakdown-btn:hover {
+    background-color: #3182ce;
+    color: white;
+}
+
+/* 内訳インライン表示領域用のスタイル */
+.breakdown-inline-container {
+    background-color: #f7fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 24px;
+    padding: 16px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.breakdown-inline-header {
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #cbd5e0;
+}
+
+.breakdown-inline-header h4 {
+    margin: 0;
+    font-size: 14px;
+    color: #4a5568;
+}
+
+.breakdown-list {
+    margin: 0;
+    max-height: 250px;
+    overflow-y: auto;
+    border: none;
+}
+
+/* 内訳リスト内の余白調整用のクラス */
+.breakdown-list-img {
+    margin-left: 16px;
+}
+
+.breakdown-list-name {
+    margin-left: 12px;
+}
+
+/* ステージ別勝率グリッド */
+.stage-stats-grid {
+    list-style: none;
+    padding: 8px;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    border: none;
+    max-height: none;
+    overflow: visible;
+}
+
+/* 日別勝率グリッドは最大5枚（本日+4日分）なので5列固定にして折り返し禁止 */
+#detail-daily-stats-list {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+/* ほ本日）バッジ */
+.daily-today-badge {
+    display: inline;
+    font-size: 10px;
+    font-weight: normal;
+    color: #718096;
+}
+
+.stage-stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 6px 22px 6px;
+    /* 下部にボタン用のスペース確保 */
+    text-align: center;
+    gap: 4px;
+    position: relative;
+}
+
+.stage-stat-name {
+    font-size: 12px;
+    font-weight: bold;
+    color: #4a5568;
+    white-space: nowrap;
+}
+
+/* ステージ別勝率タブボタン */
+.stage-tab-btn {
+    padding: 2px 8px;
+    font-size: 11px;
+    background-color: transparent;
+    color: #a0aec0;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.stage-tab-btn.active {
+    background-color: #3182ce;
+    color: white;
+    border-color: #3182ce;
+}
+
+.stage-stat-rate {
+    font-size: 22px;
+    font-weight: bold;
+    color: #3182ce;
+    white-space: nowrap;
+}
+
+.stage-stat-rate.no-data {
+    color: #a0aec0;
+    /* 未対戦時はグレー */
+}
+
+.stage-stat-detail {
+    font-size: 10px;
+    color: #a0aec0;
+    white-space: nowrap;
+}
+
+/* ステージ別内訳ボタン */
+.stage-breakdown-btn {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    padding: 1px 5px;
+    font-size: 9px;
+    background-color: #ebf8ff;
+    border: 1px solid #bee3f8;
+    color: #3182ce;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.stage-breakdown-btn:hover {
+    background-color: #bee3f8;
+}
+
+/* ローディング画面エリア */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.85);
+    /* 半透明の白背景 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    /* 最前面に表示 */
+}
+
+.loading-overlay.hidden {
+    display: none;
+}
+
+/* スピナーのアニメーション */
+.loader {
+    border: 6px solid #e2e8f0;
+    /* 薄いグレー枠 */
+    border-top: 6px solid #3182ce;
+    /* 進行状況を示す青色部 */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    /* 無限に回転 */
+    margin-bottom: 12px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* レスポンシブ対応: 画面が小さいときは隙間を減らす */
+@media (max-width: 900px) {
+    .roster {
+        gap: 2px;
+        padding: 8px;
+    }
+
+    .char-btn {
+        font-size: 10px;
+    }
+}
+
+/* モバイル: ボタン4列レイアウトに切り替え */
+@media (max-width: 600px) {
+    .roster {
+        /* 4列グリッドに変更 */
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
+        padding: 8px;
+    }
+
+    /* PC版で使っている最下段の位置調整をリセット */
+    .char-btn:nth-child(79) {
+        grid-column-start: auto;
+    }
+
+    .char-btn {
+        font-size: 13px;
+        /* 4列なのでテキストが読みやすいサイズに */
+    }
+
+    /* 見出しテキストと画像のサイズ縮小 */
+    .vs-text {
+        font-size: 16px;
+    }
+
+    .vs-header-content {
+        gap: 8px;
+        /* 画像とテキストの隙間を減らす */
+    }
+
+    .header-img {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* モバイル: 勝率のステージ別ボタンのサイズをさらに小さくし、テキストを「ス別」に変更 */
+    .stat-value-container .breakdown-btn {
+        padding: 1px 3px;
+        font-size: 9px;
+        color: transparent;
+        /* 元の文字を隠す */
+        width: 32px;
+        /* 小さい幅に固定 */
+    }
+
+    .stat-value-container .breakdown-btn::before {
+        content: "ス別";
+        color: #0077ff;
+        /* ボタンの文字色 */
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* モバイル: ステージ別勝率カードのパディングとフォントサイズを縮小して画面内に収める */
+    .stage-stats-grid {
+        gap: 4px;
+        padding: 4px;
+    }
+    
+    .stage-stat-card {
+        padding: 8px 2px 20px 2px;
+    }
+    
+    .stage-stat-rate {
+        font-size: 18px;
+    }
+
+    /* モバイル: 日別勝率の「（本日）」は非表示にする */
+    .daily-today-badge {
+        display: none;
+    }
+
+    /* 詳細勝率画面・内訳リストの余白を縮小 */
+    .breakdown-list-img {
+        margin-left: 6px;
+        margin-right: 6px;
+        /* 元の ranking-img-wrapper は 12px なので上書き */
+    }
+
+    .breakdown-list-name {
+        margin-left: 2px;
+    }
+
+    /* モバイル版における内訳リスト右側の要素はみ出し防止 (.breakdown-list に限定) */
+    .breakdown-list .history-right {
+        gap: 4px;
+        /* WIN/LOSEとステージ名の間の隙間を限界まで詰める */
+    }
+
+    .breakdown-list .history-stage {
+        font-size: 9px;
+        /* ステージ名のフォントサイズを極小化 */
+        padding: 1px 3px;
+        /* 枠の余白も極力削る */
+        margin-right: 4px;
+        /* 右側の余白を狭くする */
+        white-space: nowrap;
+        /* ステージ名が改行されないようにする */
+    }
+
+    .breakdown-list .history-result.win,
+    .breakdown-list .history-result.loss {
+        font-size: 11px;
+        /* WIN/LOSEの文字をかなり小さくする */
+    }
+
+    .breakdown-list .history-item {
+        padding: 10px 8px;
+        /* リスト全体の左右の余白を削って領域を確保 */
+    }
+
+    /* 詳細勝率画面の内訳リストでのみ日付テキストのサイズ縮小と改行禁止 */
+    .breakdown-list .history-date {
+        font-size: 11px;
+        white-space: nowrap;
+    }
+}
+
+/* ========================================
+   GASURL入力画面
+   ======================================== */
+.gasurl-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #fff5f5 0%, #f7f9fc 60%, #ebf8ff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.gasurl-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--border-color);
+    padding: 40px 32px;
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.gasurl-title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-color);
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+.gasurl-subtitle {
+    margin: -12px 0 0 0;
+    font-size: 13px;
+    color: #718096;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* 上部ボタン2つの横並びエリア */
+.gasurl-top-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.gasurl-action-btn {
+    flex: 1;
+    padding: 12px 8px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+/* シートダウンロードボタン */
+.download-btn {
+    background-color: #f7fafc;
+    border: 1px solid #cbd5e0;
+    color: #4a5568;
+}
+
+.download-btn:hover {
+    background-color: #e2e8f0;
+    border-color: #a0aec0;
+    color: #2d3748;
+}
+
+/* つかいかたボタン */
+.howto-btn {
+    background-color: #f7fafc;
+    border: 1px solid #cbd5e0;
+    color: #4a5568;
+}
+
+.howto-btn:hover {
+    background-color: #ebf8ff;
+    border-color: #3182ce;
+    color: #3182ce;
+}
+
+/* URL入力エリア */
+.gasurl-input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.gasurl-label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #4a5568;
+}
+
+.gasurl-input {
+    padding: 12px 16px;
+    font-size: 14px;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    color: var(--text-color);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.gasurl-input:focus {
+    border-color: var(--accent-red);
+    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.15);
+}
+
+.gasurl-input::placeholder {
+    color: #a0aec0;
+    font-size: 12px;
+}
+
+/* はじめるボタン */
+.gasurl-start-btn {
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: var(--accent-red);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 0 #c53030;
+    letter-spacing: 0.5px;
+}
+
+.gasurl-start-btn:hover {
+    background-color: #c53030;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 0 #9b2c2c;
+}
+
+.gasurl-start-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 0 #c53030;
+}
+
+/* ========================================
+   つかいかたモーダル
+   ======================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.modal-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 480px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #718096;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+.modal-close-btn:hover {
+    background-color: #f7fafc;
+    color: var(--text-color);
+}
+
+.modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #4a5568;
+}
+
+/* ========================================
+   つかいかたモーダル タブ
+   ======================================== */
+.howto-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--border-color);
+    overflow-x: auto;
+    flex-shrink: 0;
+    scrollbar-width: none; /* Firefox */
+}
+
+.howto-tabs::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.howto-tab {
+    flex-shrink: 0;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #718096;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px; /* border-bottomに重ねる */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.howto-tab:hover {
+    color: var(--accent-red);
+    background-color: #fff5f5;
+}
+
+.howto-tab.active {
+    color: var(--accent-red);
+    border-bottom-color: var(--accent-red);
+}
+
+/* パネル：通常は非表示 */
+.howto-panel {
+    display: none;
+}
+
+.howto-panel.active {
+    display: block;
+}
+
+.howto-panel h3 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    color: var(--text-color);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+}

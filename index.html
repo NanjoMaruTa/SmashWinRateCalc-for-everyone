@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スマブラ勝率計算機</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- ========== GASURL入力画面 ========== -->
+    <div id="gasurl-view" class="gasurl-screen">
+        <div class="gasurl-card">
+            <h1 class="gasurl-title">スマブラ勝率計算機</h1>
+            <p class="gasurl-subtitle">はじめに、あなたのスプレッドシートのURLを入力してください</p>
+
+            <div class="gasurl-top-buttons">
+                <!-- シートダウンロードボタン -->
+                <button id="sheet-download-btn" class="gasurl-action-btn download-btn">
+                    📥 シートダウンロード
+                </button>
+                <!-- つかいかたボタン -->
+                <button id="how-to-btn" class="gasurl-action-btn howto-btn">
+                    📖 つかいかた
+                </button>
+            </div>
+
+            <div class="gasurl-input-area">
+                <label class="gasurl-label" for="gas-url-input">スプレッドシートのGAS URL</label>
+                <input type="url" id="gas-url-input" class="gasurl-input"
+                    placeholder="https://script.google.com/macros/s/..." />
+            </div>
+
+            <button id="gasurl-start-btn" class="gasurl-start-btn">
+                はじめる →
+            </button>
+        </div>
+    </div>
+
+    <!-- ========== つかいかたモーダル ========== -->
+    <div id="howto-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2 class="modal-title">📖 つかいかた</h2>
+                <button id="modal-close-btn" class="modal-close-btn">✕</button>
+            </div>
+
+            <!-- タブナビゲーション -->
+            <div class="howto-tabs">
+                <button class="howto-tab active" data-tab="0">はじめかた</button>
+                <button class="howto-tab" data-tab="1">勝敗記録</button>
+                <button class="howto-tab" data-tab="2">マッチ別戦績</button>
+                <button class="howto-tab" data-tab="3">キャラ別戦績</button>
+                <button class="howto-tab" data-tab="4">全キャラ勝率</button>
+            </div>
+
+            <!-- タブコンテンツ -->
+            <div class="modal-body">
+                <div class="howto-panel active" data-panel="0">
+                    <h3>はじめかた</h3>
+                    <p>このアプリの利用手順は以下の通りです。</p>
+                    <ol style="padding-left: 20px; text-align: left;">
+                        <li>「シートダウンロード」を押して、Excelファイルをダウンロードしてください。</li>
+                        <li>「スマブラ勝率データ」をご自分のGoogleスプレッドシートにアップロードしてください。</li>
+                        <li>セルF1に入力されている勝敗記録用GASコードを全てコピーしてください。</li>
+                        <li>スプレッドシートで「スマブラ勝率データ」を開き、上部の「拡張機能」から「Apps Script」を選択してください。</li>
+                        <li>「無題のプロジェクト」が開いたら、予めある3行のコードを消し、先ほどのGASコードをペーストしてください。</li>
+                        <li>右上の「デプロイ」から「新しいデプロイ」を選択してください。</li>
+                        <li>「種類の選択」で「ウェブアプリ」を、「アクセスできるユーザー」を「全員」に設定したのち、「デプロイ」を押してください。</li>
+                        <li>「アクセスを承認」を押すと警告画面が出てきます。左下の灰色の文字（英語版では”Advanced”、日本語版では「詳細」または「拡張」）を押したのち、下の「Go to
+                            ～」を押してください。</li>
+                        <li>また別画面に移動するので、最下部の”Continue”もしくは「続ける」を押してください。</li>
+                        <li>新しいデプロイが終わるので、「ウェブアプリ」のURLをコピーしてください。このURLは「デプロイ」→「デプロイを管理」からでも確認できます。</li>
+                        <li>スマブラ勝率計算機に戻り、「スプレッドシートのGAS URL」にURLをペーストしてください。</li>
+                    </ol>
+                    <p>以上です。お疲れ様でした。</p>
+                </div>
+                <div class="howto-panel" data-panel="1">
+                    <h3>勝敗記録</h3>
+                    <p>勝敗を記録する手順は以下の通りです。</p>
+                    <ol style="padding-left: 20px; text-align: left;">
+                        <li>使用するキャラを選択してください。選択したキャラはヘッダーの左下に表示されます。</li>
+                        <li>対戦相手のキャラを選択してください。①と②で選んだマッチアップの勝敗記録画面に移動します。</li>
+                        <li>戦ったステージを選択したのち、「勝ち」または「負け」を押してください。</li>
+                    </ol>
+                </div>
+                <div class="howto-panel" data-panel="2">
+                    <h3>マッチアップ別戦績の確認</h3>
+                    <p>勝敗記録画面で、勝敗の記録以外にできることは以下の通りです。</p>
+                    <ol style="padding-left: 20px; text-align: left;">
+                        <li>直近10戦と直近50戦の勝率%を確認できます。「内訳」を押すと、ステージ別の勝率が確認できます。</li>
+                        <li>ページ下部で対戦履歴が確認できます。対戦履歴の保管は50戦までです。履歴の削除は個別で「消去」を押すか、右上の「履歴全削除」を押します。削除後の復元はできないのでご注意ください。</li>
+                        <li>使用キャラの名前を押すと詳細勝率画面に移動できます。</li>
+                    </ol>
+                </div>
+                <div class="howto-panel" data-panel="3">
+                    <h3>使用キャラ別戦績の確認</h3>
+                    <p>使用キャラを選択後に「詳細勝率」を押すか、勝敗記録画面で使用キャラの名前を押すと、詳細勝率画面に移動します。<br>
+                    詳細勝率画面でできることは以下の通りです。</p>
+                    <ol style="padding-left: 20px; text-align: left;">
+                        <li>使用キャラの直近10戦、直近50戦の総合勝率を確認できます。「内訳」を押すと、対戦内容が確認できます。</li>
+                        <li>日別の勝率が確認できます。左から、本日の勝率と、試合データのある直近4日の勝率が確認できます。「内訳」を押すと、対戦内容が確認できます。</li>
+                        <li>ステージ別の勝率が確認できます。右上のボタンで、計算方法を直近10戦と直近50戦で切り替えできます。「内訳」を押すと、対戦内容が確認できます。</li>
+                        <li>対戦相手のキャラを勝率が高い順に並べた、有利対面ランキングを確認できます。</li>
+                        <li>直近500戦までで当たった割合を高い順に並べた、遭遇率ランキングを確認できます。</li>
+                        <li>詳細勝率画面では、対戦相手のキャラの名前をクリックすると、そのキャラとの勝敗記録画面に移動します。</li>
+                    </ol>
+                </div>
+                <div class="howto-panel" data-panel="4">
+                    <h3>全キャラ別の勝率の確認</h3>
+                    <p>使用キャラを選択するより前に、「全キャラ勝率」を押すと、全キャラ勝率ランキングに移動します。<br>
+                    キャラ名をクリックすると、そのキャラの詳細勝率画面に移動します。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header class="app-header hidden" id="app-header">
+        <h1>スマブラ勝率計算機</h1>
+        <p id="instruction-text">使用キャラクターを選択してください</p>
+        <button id="header-howto-btn" class="header-howto-btn">📖 つかいかた</button>
+        <button id="change-url-btn" class="change-url-btn">URL変更</button>
+    </header>
+
+    <main class="main-content">
+        <!-- キャラクター選択枠（縦7行×横13列、最下段左右2つ空き） -->
+        <div id="roster-view" class="roster-container">
+            <div class="roster-header">
+                <div id="selected-player-display" class="selected-player-display hidden">
+                    使用キャラ: <span id="player-name-text"></span>
+                </div>
+                <button id="back-btn" class="back-btn hidden">使用キャラ選択に戻る</button>
+            </div>
+            <div id="character-roster" class="roster">
+                <!-- JavaScriptでボタンを生成します -->
+            </div>
+        </div>
+
+        <!-- 勝敗記録画面（初期は非表示） -->
+        <div id="match-view" class="match-container hidden">
+            <div class="match-header">
+                <button id="back-to-roster-btn" class="back-btn">← キャラ選択に戻る</button>
+                <h2 id="vs-text" class="vs-text">マリオ VS ドンキーコング</h2>
+            </div>
+
+            <div class="action-buttons">
+                <button id="win-btn" class="result-btn win-btn">勝ち</button>
+                <button id="loss-btn" class="result-btn loss-btn">負け</button>
+            </div>
+
+            <div class="stage-select-container">
+                <div class="stage-buttons">
+                    <button id="stage-fd-btn" class="stage-btn active">終点</button>
+                    <button id="stage-bf-btn" class="stage-btn">戦場</button>
+                    <button id="stage-sbf-btn" class="stage-btn">小戦場</button>
+                    <button id="stage-other-btn" class="stage-btn">その他</button>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <!-- 総合勝率表示領域 (詳細勝率画面と同じレイアウトを使用) -->
+                <div class="detail-overview">
+                    <div class="detail-overview-item">
+                        <span class="detail-overview-label">直近10戦 総合勝率</span>
+                        <span id="rate-10" class="detail-overview-value">--%</span>
+                        <button id="match-breakdown-10-btn" class="breakdown-btn hidden">内訳</button>
+                    </div>
+                    <div class="detail-overview-item">
+                        <span class="detail-overview-label">直近50戦 総合勝率</span>
+                        <span id="rate-50" class="detail-overview-value">--%</span>
+                        <button id="match-breakdown-50-btn" class="breakdown-btn hidden">内訳</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 内訳インライン表示領域 -->
+            <div id="match-breakdown-inline-container" class="breakdown-inline-container hidden">
+                <div class="breakdown-inline-header">
+                    <h4 id="match-breakdown-title">直近10戦 ステージ別</h4>
+                </div>
+                <ul id="match-breakdown-list" class="history-list breakdown-list">
+                    <!-- Java Scriptで生成 -->
+                </ul>
+            </div>
+
+            <!-- ステージ別内訳インライン表示領域 -->
+            <div id="match-stage-breakdown-inline-container" class="breakdown-inline-container hidden"
+                style="margin-top: 10px;">
+                <div class="breakdown-inline-header">
+                    <h4 id="match-stage-breakdown-title">ステージ 内訳</h4>
+                </div>
+                <ul id="match-stage-breakdown-list" class="history-list breakdown-list">
+                    <!-- JavaScriptで生成 -->
+                </ul>
+            </div>
+
+            <div class="history-section">
+                <div class="history-header">
+                    <h3>対戦履歴 <span id="history-count">(0)</span></h3>
+                    <button id="clear-all-history-btn" class="clear-all-btn">履歴全削除</button>
+                </div>
+                <ul id="history-list" class="history-list">
+                    <!-- Java Scriptで履歴を生成 -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- 全キャラ勝率画面（初期は非表示） -->
+        <div id="ranking-view" class="match-container hidden">
+            <div class="match-header">
+                <button id="back-from-ranking-btn" class="back-btn">← キャラ選択に戻る</button>
+                <h2 class="vs-text">全キャラ勝率ランキング</h2>
+            </div>
+
+            <div class="action-buttons ranking-tabs">
+                <button id="tab-10-btn" class="result-btn win-btn active-tab">直近10戦</button>
+                <button id="tab-50-btn" class="result-btn loss-btn inactive-tab">直近50戦</button>
+            </div>
+
+            <div class="history-section">
+                <ul id="ranking-list" class="history-list ranking-list">
+                    <!-- JavaScriptでランキングを生成 -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- 詳細勝率画面（初期は非表示） -->
+        <div id="detail-view" class="match-container hidden">
+            <div class="match-header">
+                <button id="back-from-detail-btn" class="back-btn">← キャラ選択に戻る</button>
+                <h2 id="detail-char-name" class="vs-text">キャラクター詳細勝率</h2>
+            </div>
+
+            <!-- 総合勝率表示領域 -->
+            <div class="detail-overview">
+                <div class="detail-overview-item">
+                    <span class="detail-overview-label">直近10戦 総合勝率</span>
+                    <span id="detail-rate-10" class="detail-overview-value">--%</span>
+                    <button id="breakdown-10-btn" class="breakdown-btn hidden">内訳</button>
+                </div>
+                <div class="detail-overview-item">
+                    <span class="detail-overview-label">直近50戦 総合勝率</span>
+                    <span id="detail-rate-50" class="detail-overview-value">--%</span>
+                    <button id="breakdown-50-btn" class="breakdown-btn hidden">内訳</button>
+                </div>
+            </div>
+
+            <!-- 内訳インライン表示領域 -->
+            <div id="breakdown-inline-container" class="breakdown-inline-container hidden">
+                <div class="breakdown-inline-header">
+                    <h4 id="breakdown-title">直近10戦 内訳</h4>
+                </div>
+                <ul id="breakdown-list" class="history-list breakdown-list">
+                    <!-- Java Scriptで履歴を生成 -->
+                </ul>
+            </div>
+
+            <!-- 日別勝率表示領域 -->
+            <div id="detail-daily-stats-container" class="breakdown-inline-container" style="margin-top: 10px;">
+                <div class="breakdown-inline-header">
+                    <h4 style="margin: 0;">日別勝率</h4>
+                </div>
+                <ul id="detail-daily-stats-list" class="stage-stats-grid">
+                    <!-- JavaScriptで生成 -->
+                </ul>
+            </div>
+
+            <!-- 日別勝率 内訳インライン表示領域 -->
+            <div id="daily-breakdown-inline-container" class="breakdown-inline-container hidden"
+                style="margin-top: 10px;">
+                <div class="breakdown-inline-header">
+                    <h4 id="daily-breakdown-title" style="margin: 0;"></h4>
+                </div>
+                <ul id="daily-breakdown-list" class="history-list breakdown-list">
+                    <!-- JavaScriptで生成 -->
+                </ul>
+            </div>
+
+            <!-- ステージ別勝率表示領域 -->
+            <div id="detail-stage-stats-container" class="breakdown-inline-container" style="margin-top: 10px;">
+                <div class="breakdown-inline-header"
+                    style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="margin: 0;">ステージ別勝率</h4>
+                    <div class="stage-tabs" style="display: flex; gap: 4px;">
+                        <button id="stage-tab-10-btn" class="stage-tab-btn active">10戦</button>
+                        <button id="stage-tab-50-btn" class="stage-tab-btn">50戦</button>
+                    </div>
+                </div>
+                <ul id="detail-stage-ranking-list" class="history-list breakdown-list">
+                    <!-- JavaScriptで生成 -->
+                </ul>
+            </div>
+
+            <!-- ステージ別内訳インライン表示領域 -->
+            <div id="stage-breakdown-inline-container" class="breakdown-inline-container hidden"
+                style="margin-top: 10px;">
+                <div class="breakdown-inline-header">
+                    <h4 id="stage-breakdown-title">ステージ 内訳</h4>
+                </div>
+                <ul id="stage-breakdown-list" class="history-list breakdown-list">
+                    <!-- JavaScriptで生成 -->
+                </ul>
+            </div>
+
+            <div class="history-section">
+                <!-- マッチアップ別ランキング -->
+                <div class="history-header">
+                    <h3>有利対面ランキング</h3>
+                </div>
+                <ul id="detail-ranking-list" class="history-list ranking-list">
+                    <!-- JavaScriptでランキングを生成 -->
+                </ul>
+            </div>
+
+            <div class="history-section">
+                <!-- 遭遇率ランキング -->
+                <div class="history-header">
+                    <h3>遭遇率ランキング</h3>
+                    <span id="encounter-total-label" style="font-size: 12px; color: #718096;"></span>
+                </div>
+                <ul id="encounter-ranking-list" class="history-list ranking-list">
+                    <!-- JavaScriptで生成 -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- ローディング画面 -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="loader"></div>
+            <p style="font-weight: bold; color: #4a5568;">通信中...</p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
